@@ -5,8 +5,9 @@ const Footer = () => {
     <Flex as="footer" width="full" align="center">
       <Text>
         {new Date().getFullYear()} -{" "}
-        <Link href="https://sznm.dev" isExternal>
-          sznm.dev
+        Zharkyn Kassenov based on {" "}
+        <Link href="https://github.com/sozonome/nextchakra-starter" isExternal>
+          nextchakra-starter
         </Link>
       </Text>
     </Flex>

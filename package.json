@@ -1,8 +1,8 @@
 {
-  "name": "nextchakra-starter",
-  "version": "0.1.0",
+  "name": "demo-project",
+  "version": "0.0.1",
   "private": true,
-  "author": "sozonome",
+  "author": "Zharkyn Kassenov",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,14 +15,15 @@
     "@emotion/styled": "^11.3.0",
     "@fontsource/lexend": "^4.2.1",
     "framer-motion": "^4.1.11",
+    "multer": "^1.4.2",
     "next": "^10.2.0",
-    "next-pwa": "^5.2.15",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "next-pwa": "^5.2.18",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-icons": "^4.2.0"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^3.1.0",
+    "@netlify/plugin-nextjs": "^3.2.0",
     "@types/node": "^15.0.1",
     "@types/react": "^17.0.4",
     "prettier": "^2.2.1",
