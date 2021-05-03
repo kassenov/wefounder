@@ -23,6 +23,6 @@ export class Company {
     @Column({ type: 'text', nullable: false })
     public slug!: string;
 
-    @OneToMany(type => PitchDeck, pitchDeck => pitchDeck.founder)
+    @OneToMany(type => PitchDeck, pitchDeck => pitchDeck.company)
     public pitchDecks!: PitchDeck[];
 }

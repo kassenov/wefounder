@@ -27,7 +27,7 @@ export class PitchDeck {
     public slug!: string;
 
     @ManyToOne(type => Company, company => company.pitchDecks)
-    public founder!: Company;
+    public company!: Company;
 
     @OneToMany(type => PitchDeckUpload, upload => upload.pitchDeck)
     public uploads!: PitchDeckUpload;

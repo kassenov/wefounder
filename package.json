@@ -8,10 +8,8 @@
     "build": "next build",
     "start": "next start",
     "prettify": "prettier --write src/",
-    "g:migration": "yarn typeorm:local migration:generate -n",
-    "g:entity": "yarn typeorm:local entity:create -n",
     "db:seed": "yarn hygen seed run",
-    "db:seeds:up": "yarn local seeds/local/seedsUp.ts",
+    "db:seeds:up": "yarn local src/database/seeds/seedsUp.ts",
     "typeorm:local": "yarn local ./node_modules/typeorm/cli.js",
     "local": "DOTENV_CONFIG_PATH=./.env ts-node -P ./tsconfig.json -r dotenv/config"
   },
@@ -33,7 +31,7 @@
     "typeorm": "^0.2.32",
     "next-connect": "^0.10.1",
     "reflect-metadata": "^0.1.13",
-    "sqlite3": "^5.0.2"
+    "better-sqlite3": "^7.1.5"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^3.2.0",
