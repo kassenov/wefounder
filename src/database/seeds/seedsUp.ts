@@ -12,16 +12,16 @@ const seed = async (): Promise<any> => {
         const pitchDeck = await PitchDeckFactory.create({ slug: "pitch_deck_1", company: company });
         console.log('Pitch Deck: ', pitchDeck);
 
-        console.log('Done seeding users.');
+        console.log('Done seeding data.');
 
     } catch (e) {
-        console.error('ERROR - Users: ', e);
+        console.error('ERROR - Details: ', e);
     }
 };
 
 const run = async (): Promise<any> => {
     console.log('Connecting to DB');
-    const connection = await initializeDatabase({ migrationsRun: false });
+    const connection = await initializeDatabase({ migrationsRun: true });
 
     console.log('Seeding DB');
     await seed();

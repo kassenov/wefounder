@@ -10,7 +10,7 @@ export const initializeDatabase = async (optionOverrides: Record<string, any> = 
   const options: any = {
     ...connectionOptions,
     entities: [Company, PitchDeck, PitchDeckUpload, PitchDeckImage],
-    migrations: [__dirname + '/migrations/*.ts'],
+    migrations: [__dirname + '/../migrations/*.ts'],
     ...optionOverrides
   };
 

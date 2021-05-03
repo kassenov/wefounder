@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "prettify": "prettier --write src/",
-    "db:seed": "yarn hygen seed run",
+    "g:migration": "yarn typeorm:local migration:generate -n",
     "db:seeds:up": "yarn local src/database/seeds/seedsUp.ts",
     "typeorm:local": "yarn local ./node_modules/typeorm/cli.js",
     "local": "DOTENV_CONFIG_PATH=./.env ts-node -P ./tsconfig.json -r dotenv/config"
