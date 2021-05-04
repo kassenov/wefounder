@@ -25,11 +25,7 @@ export class PitchDeckUpload {
 
     @Index({ unique: true })
     @Column({ type: 'text', nullable: false })
-    public fileName!: string;
-
-    @Index({ unique: true })
-    @Column({ type: 'text', nullable: false })
-    public originalFileName!: string;
+    public filePath!: string;
 
     @ManyToOne(type => PitchDeck, deck => deck.uploads)
     public pitchDeck!: PitchDeck;

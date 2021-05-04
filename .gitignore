@@ -28,7 +28,7 @@ yarn-error.log*
 .env
 
 # db
-mydb.sql
+mydb.*
 
 # vercel
 .vercel
@@ -36,3 +36,7 @@ mydb.sql
 **/public/workbox-*.js
 **/public/sw.js
 **/public/service-worker.js
+
+# uplaods
+/public/uploads/*
+/public/converts/*
