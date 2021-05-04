@@ -6,6 +6,8 @@ import { ConvertAPI } from 'convertapi';
 import { getRepository } from 'typeorm';
 import initializeDatabase from '../../../database/initializer/database';
 import { PitchDeck } from '../../../database/entities/PitchDeck';
+import { PitchDeckUpload } from '../../../database/entities/PitchDeckUpload';
+import { PitchDeckUploadFactory } from 'database/factories/PitchDeckUploadFactory';
 
 const FILE_UPLOAD_DESTINATION = './public/uploads';
 const CONVERTED_FILES_DESTINATION = './public/converted';
@@ -33,22 +35,33 @@ const uploadMiddleware = upload.single('theFile');
 apiRoute.use(uploadMiddleware);
 
 // Process a POST request
-apiRoute.post(async (req: { query: { pitchDeckSlug: string }, file: { path: string }}, res) => {
-    const { pitchDeckSlug } = req.query;
-    const { path } = req.file;
-
+apiRoute.post(async (req: { query: { pitchDeckSlug: string }, file: { path: string } }, res) => {
     // Initialize connection
     const connection = await initializeDatabase();
+
+    const { pitchDeckSlug } = req.query;
+    const { path } = req.file;
 
     const pitchDeckPromise = getPitchDeck(pitchDeckSlug as string);
 
     const convertPromise = convert(path);
 
+    const pitchDeck = await pitchDeckPromise;
+    if (pitchDeck === undefined) {
+        res.status(404).json({ error: `Pitch deck with slug '${pitchDeckSlug}' not found`});
+    } else {
+        const pitchDeckUpload = createUploadRecord(path, pitchDeck);
+
+        res.status(200).json({ data: 'success' });
+    }
+
     // Close connection
     await connection.close();
-
-    res.status(200).json({ data: 'success' });
 });
+
+const createUploadRecord = async (filePath: string, pitchDeck: PitchDeck) => {
+    return await PitchDeckUploadFactory.build({ filePath, pitchDeck });
+}
 
 const getPitchDeck = async (slug: string) => {
     const pitchDeckRepo = await getRepository(PitchDeck);
