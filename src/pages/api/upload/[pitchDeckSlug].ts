@@ -1,7 +1,11 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
+import { useRouter } from "next/router";
 import multer from 'multer';
+
+const router = useRouter()
+const { pitchDeckSlug } = router.query
 
 // Returns a Multer instance that provides several methods for generating 
 // middleware that process files uploaded in multipart/form-data format.

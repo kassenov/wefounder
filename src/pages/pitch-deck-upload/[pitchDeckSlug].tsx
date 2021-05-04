@@ -2,10 +2,10 @@ import { UiFileInputButton } from "components/UiFileInputButton";
 import axios from 'axios';
 import { useRouter } from "next/router";
 
-const UploadPage = (props) => {
+const UploadPage = () => {
 
     const router = useRouter()
-    const { pitchDeckId } = router.query
+    const { pitchDeckSlug } = router.query
 
     const onChange = async (formData: FormData) => {
         const config = {    
@@ -15,7 +15,7 @@ const UploadPage = (props) => {
             },
         };
 
-        const response = await axios.post(`/api/upload/${pitchDeckId}`, formData, config);
+        const response = await axios.post(`/api/upload/${pitchDeckSlug}`, formData, config);
 
         console.log('response', response.data);
     };

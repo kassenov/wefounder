@@ -1,7 +1,6 @@
-import { Flex, Link, Text, Box, Heading } from "@chakra-ui/layout";
+import { Link, Text, Box, Heading, VStack } from "@chakra-ui/layout";
 import Image from "next/image";
 
-import SomeImage from "components/SomeImage";
 import CTASection from "components/CTASection";
 import { useColorMode } from "@chakra-ui/color-mode";
 
@@ -14,17 +13,22 @@ const IntroText = () => {
         Hello there!
         </Heading>
 
-      <Box
+      <VStack
         py={4}
-        borderRadius={4}
+        spacing={2}
+        alignItems="left"
       >
         <Box d="flex" alignItems="center" fontSize="sm">
           This is a demo project where you can see a pitch deck with images from a founder's presentation uploaded as a PPT or PDF.
           It supports other types of files, however I haven't tested them out.
-          <br />
-
         </Box>
-      </Box>
+        <Box>
+          The following link will direct you to {" "}
+          <Link href="/pitch-deck-upload/company_1">
+            <a>upload page</a>.
+          </Link>
+        </Box>
+      </VStack>
     </>
   )
 }
@@ -40,7 +44,7 @@ const IntroImage = () => {
         marginX="auto"
       >
         <Image
-          src="/Launching-amico.svg"
+          src="/Landing page-rafiki.svg"
           width={400}
           height={400}
           alt="Launching Illustration"
