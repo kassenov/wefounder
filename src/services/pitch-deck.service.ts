@@ -15,6 +15,21 @@ const getBySlug = async (slug: string) => {
   return result;
 };
 
+// TODO This should be refactored
+const getAll = async () => {
+  // Initialize connection
+  const connection = await initializeDatabase();
+
+  const pitchDeckRepo = await getRepository(PitchDeck);
+  const result = await pitchDeckRepo.find();
+
+  // Close connection
+  await connection.close();
+
+  return result;
+};
+
 export const PitchDeckService = {
   getBySlug,
+  getAll,
 };

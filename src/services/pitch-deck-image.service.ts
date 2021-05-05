@@ -3,6 +3,7 @@ import { PitchDeck } from "../database/entities/PitchDeck";
 import { PitchDeckImageFactory } from "../database/factories/PitchDeckImageFactory";
 import { PitchDeckImage } from "database/entities/PitchDeckImage";
 import { PitchDeckUpload } from "database/entities/PitchDeckUpload";
+import { getRepository } from "typeorm";
 
 const create = async (
   filePaths: string[],
@@ -28,6 +29,28 @@ const create = async (
   return result;
 };
 
+const getAllByPithDeckSlug = async (slug: string) => {
+  // Initialize connection
+  const connection = await initializeDatabase();
+
+  const imageRepo = await getRepository(PitchDeckImage);
+  const result = await imageRepo.find({ 
+    where: { pitchDeck: { slug } },
+    join: {
+      alias: "image",
+      leftJoinAndSelect: {
+          pitchDeck: "image.pitchDeck"
+      }
+    }
+  });
+
+  // Close connection
+  await connection.close();
+
+  return result;
+};
+
 export const PichDeckImageService = {
   create,
+  getAllByPithDeckSlug
 };
