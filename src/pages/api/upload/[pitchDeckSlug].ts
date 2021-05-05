@@ -9,6 +9,7 @@ import { PitchDeck } from "../../../database/entities/PitchDeck";
 import { PitchDeckUploadFactory } from "../../../database/factories/PitchDeckUploadFactory";
 import { PitchDeckImageFactory } from "../../../database/factories/PitchDeckImageFactory";
 import { v4 } from "uuid";
+import { PitchDeckImage } from "database/entities/PitchDeckImage";
 
 const FILE_UPLOAD_DESTINATION = "./public/uploads";
 const CONVERTED_FILES_DESTINATION = "./public/converts";
@@ -53,50 +54,67 @@ apiRoute.post(
     req: { query: { pitchDeckSlug: string }; file: { path: string } },
     res
   ) => {
-    // Initialize connection
-    const connection = await initializeDatabase();
-
     const { pitchDeckSlug } = req.query;
     const { path } = req.file;
 
-    const pitchDeckPromise = getPitchDeck(pitchDeckSlug as string);
-    const filePathsPromise = convert(path);
-    const pitchDeck = await pitchDeckPromise;
+    const pitchDeck = await getPitchDeck(pitchDeckSlug as string);
     if (pitchDeck === undefined) {
-      // Close connection
-      await connection.close();
-
       res
         .status(404)
         .json({ error: `Pitch deck with slug '${pitchDeckSlug}' not found` });
     } else {
+      const filePathsPromise = convert(path);
       const pitchDeckUpload = await createUploadRecord(path, pitchDeck);
       const filePaths = await filePathsPromise;
       const pitchDeckImages = await createImageRecords(filePaths, pitchDeck);
 
-      // Close connection
-      await connection.close();
       res.status(200).json({ data: "success" });
     }
   }
 );
 
 const createUploadRecord = async (filePath: string, pitchDeck: PitchDeck) => {
-  return await PitchDeckUploadFactory.create({ filePath, pitchDeck });
+  // Initialize connection
+  const connection = await initializeDatabase();
+
+  const result = await PitchDeckUploadFactory.create({ filePath, pitchDeck });
+
+  // Close connection
+  await connection.close();
+
+  return result;
 };
 
 const createImageRecords = async (
   filePaths: string[],
   pitchDeck: PitchDeck
 ) => {
-  return await filePaths.map(async (filePath) => {
-    return await PitchDeckImageFactory.create({ filePath, pitchDeck });
-  });
+  // Initialize connection
+  const connection = await initializeDatabase();
+
+  const result: PitchDeckImage[] = [];
+  for (const filePath of filePaths) {
+    const image = await PitchDeckImageFactory.create({ filePath, pitchDeck });
+    result.push(image);
+  }
+
+  // Close connection
+  await connection.close();
+
+  return result;
 };
 
 const getPitchDeck = async (slug: string) => {
+  // Initialize connection
+  const connection = await initializeDatabase();
+
   const pitchDeckRepo = await getRepository(PitchDeck);
-  return await pitchDeckRepo.findOne({ where: { slug } });
+  const result = await pitchDeckRepo.findOne({ where: { slug } });
+
+  // Close connection
+  await connection.close();
+
+  return result;
 };
 
 const convert = async (filePath: string) => {

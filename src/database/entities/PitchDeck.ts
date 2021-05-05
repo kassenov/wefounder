@@ -29,9 +29,10 @@ export class PitchDeck {
   @ManyToOne((type) => Company, (company) => company.pitchDecks)
   public company!: Company;
 
-  @OneToMany((type) => PitchDeckUpload, (upload) => upload.pitchDeck)
-  public uploads!: PitchDeckUpload;
-
-  // @OneToOne(type => PitchDeckUpload, upload => upload.pitchDeck)
-  // public lastUpload: PitchDeckUpload | undefined;
+  @OneToMany((type) => PitchDeckUpload, (upload) => upload.pitchDeck, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  public uploads!: PitchDeckUpload[];
 }

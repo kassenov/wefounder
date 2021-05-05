@@ -23,6 +23,10 @@ export class Company {
   @Column({ type: "text", nullable: false })
   public slug!: string;
 
-  @OneToMany((type) => PitchDeck, (pitchDeck) => pitchDeck.company)
+  @OneToMany((type) => PitchDeck, (pitchDeck) => pitchDeck.company, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   public pitchDecks!: PitchDeck[];
 }

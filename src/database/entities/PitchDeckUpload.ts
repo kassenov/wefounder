@@ -32,6 +32,10 @@ export class PitchDeckUpload {
   @ManyToOne((type) => PitchDeck, (deck) => deck.uploads)
   public pitchDeck!: PitchDeck;
 
-  @OneToMany((type) => PitchDeckImage, (image) => image.upload)
+  @OneToMany((type) => PitchDeckImage, (image) => image.upload, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   public images!: PitchDeckImage[];
 }
