@@ -3,31 +3,33 @@ import { PitchDeckFactory } from "../factories/PitchDeckFactory";
 import initializeDatabase from "../initializer/database";
 
 const seed = async (): Promise<any> => {
-    try {
-        console.log('Seeding dummy data...');
+  try {
+    console.log("Seeding dummy data...");
 
-        const company = await CompanyFactory.create({ slug: "company_1" });
-        console.log('Company: ', company);
+    const company = await CompanyFactory.create({ slug: "company_1" });
+    console.log("Company: ", company);
 
-        const pitchDeck = await PitchDeckFactory.create({ slug: "pitch_deck_1", company: company });
-        console.log('Pitch Deck: ', pitchDeck);
+    const pitchDeck = await PitchDeckFactory.create({
+      slug: "pitch_deck_1",
+      company: company,
+    });
+    console.log("Pitch Deck: ", pitchDeck);
 
-        console.log('Done seeding data.');
-
-    } catch (e) {
-        console.error('ERROR - Details: ', e);
-    }
+    console.log("Done seeding data.");
+  } catch (e) {
+    console.error("ERROR - Details: ", e);
+  }
 };
 
 const run = async (): Promise<any> => {
-    console.log('Connecting to DB');
-    const connection = await initializeDatabase({ migrationsRun: true });
+  console.log("Connecting to DB");
+  const connection = await initializeDatabase({ migrationsRun: true });
 
-    console.log('Seeding DB');
-    await seed();
+  console.log("Seeding DB");
+  await seed();
 
-    console.log('Closing DB');
-    return await connection.close();
+  console.log("Closing DB");
+  return await connection.close();
 };
 
 run();

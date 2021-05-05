@@ -11,27 +11,24 @@ const IntroText = () => {
     <>
       <Heading as="h2" fontSize="3xl">
         Hello there!
-        </Heading>
+      </Heading>
 
-      <VStack
-        py={4}
-        spacing={2}
-        alignItems="left"
-      >
+      <VStack py={4} spacing={2} alignItems="left">
         <Box d="flex" alignItems="center" fontSize="sm">
-          This is a demo project where you can see a pitch deck with images from a founder's presentation uploaded as a PPT or PDF.
-          It supports other types of files, however I haven't tested them out.
+          This is a demo project where you can see a pitch deck with images from
+          a founder's presentation uploaded as a PPT or PDF. It supports other
+          types of files, however I haven't tested them out.
         </Box>
         <Box>
-          The following link will direct you to {" "}
+          The following link will direct you to{" "}
           <Link href="/pitch-deck-upload/pitch_deck_1">
             <a>upload page</a>.
           </Link>
         </Box>
       </VStack>
     </>
-  )
-}
+  );
+};
 
 const IntroImage = () => {
   return (
@@ -57,7 +54,7 @@ const IntroImage = () => {
       </Text>
     </>
   );
-}
+};
 
 const Home = () => {
   const { colorMode } = useColorMode();

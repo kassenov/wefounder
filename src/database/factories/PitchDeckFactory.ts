@@ -1,10 +1,10 @@
-import { PitchDeck } from '../entities/PitchDeck';
-import { getRepository } from 'typeorm';
+import { PitchDeck } from "../entities/PitchDeck";
+import { getRepository } from "typeorm";
 
 export const PitchDeckFactory = {
   build: (attrs: Partial<PitchDeck> = {}) => {
     const deckAttrs: Partial<PitchDeck> = {
-      ...attrs
+      ...attrs,
     };
 
     return getRepository(PitchDeck).create(deckAttrs);
@@ -16,4 +16,4 @@ export const PitchDeckFactory = {
 
     return createdPitchDeck;
   },
-}
+};

@@ -1,19 +1,21 @@
-import { getRepository } from 'typeorm';
-import { PitchDeckUpload } from 'database/entities/PitchDeckUpload';
+import { getRepository } from "typeorm";
+import { PitchDeckImage } from "database/entities/PitchDeckImage";
 
-export const PitchDeckUploadFactory = {
-  build: (attrs: Partial<PitchDeckUpload> = {}) => {
-    const deckUploadAttrs: Partial<PitchDeckUpload> = {
-      ...attrs
+export const PitchDeckImageFactory = {
+  build: (attrs: Partial<PitchDeckImage> = {}) => {
+    const deckImageAttrs: Partial<PitchDeckImage> = {
+      ...attrs,
     };
 
-    return getRepository(PitchDeckUpload).create(deckUploadAttrs);
+    return getRepository(PitchDeckImage).create(deckImageAttrs);
   },
 
-  create: async (attrs: Partial<PitchDeckUpload> = {}) => {
-    const pitchDeckUpload = PitchDeckUploadFactory.build(attrs);
-    const createdPitchUploadDeck = await getRepository(PitchDeckUpload).save(pitchDeckUpload);
+  create: async (attrs: Partial<PitchDeckImage> = {}) => {
+    const pitchDeckImage = PitchDeckImageFactory.build(attrs);
+    const createdPitchImageDeck = await getRepository(PitchDeckImage).save(
+      pitchDeckImage
+    );
 
-    return createdPitchUploadDeck;
+    return createdPitchImageDeck;
   },
-}
+};

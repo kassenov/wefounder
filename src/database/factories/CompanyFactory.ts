@@ -1,10 +1,10 @@
-import { Company } from '../entities/Company';
-import { getRepository } from 'typeorm';
+import { Company } from "../entities/Company";
+import { getRepository } from "typeorm";
 
 export const CompanyFactory = {
   build: (attrs: Partial<Company> = {}) => {
     const companyAttrs: Partial<Company> = {
-      ...attrs
+      ...attrs,
     };
 
     return getRepository(Company).create(companyAttrs);
@@ -16,4 +16,4 @@ export const CompanyFactory = {
 
     return createdCompany;
   },
-}
+};
