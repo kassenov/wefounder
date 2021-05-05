@@ -6,18 +6,31 @@ import { ConvertAPI } from 'convertapi';
 import { getRepository } from 'typeorm';
 import initializeDatabase from '../../../database/initializer/database';
 import { PitchDeck } from '../../../database/entities/PitchDeck';
-import { PitchDeckUpload } from '../../../database/entities/PitchDeckUpload';
-import { PitchDeckUploadFactory } from 'database/factories/PitchDeckUploadFactory';
+import { PitchDeckImageFactory } from 'database/factories/PitchDeckUploadFactory';
+import { PitchDeckUploadFactory } from 'database/factories/PitchDeckImageFactory';
+import { v4 } from 'uuid';
 
 const FILE_UPLOAD_DESTINATION = './public/uploads';
-const CONVERTED_FILES_DESTINATION = './public/converted';
+const CONVERTED_FILES_DESTINATION = './public/converts';
+
+const EXTENSION_REGEX = /(?:\.([^.]+))?$/;
 
 // Returns a Multer instance that provides several methods for generating 
 // middleware that process files uploaded in multipart/form-data format.
 const upload = multer({
     storage: multer.diskStorage({
         destination: FILE_UPLOAD_DESTINATION,
-        filename: (req, file, cb) => cb(null, file.originalname),
+        filename: (req, file, cb) => {
+            const matches = EXTENSION_REGEX.exec(file.originalname);
+
+            let extension = '';
+            if (matches !== null) {
+                extension = matches[0];
+            }
+
+            const filename = `${v4()}${extension}`;
+            cb(null, filename)
+        },
     }),
 });
 
@@ -43,14 +56,15 @@ apiRoute.post(async (req: { query: { pitchDeckSlug: string }, file: { path: stri
     const { path } = req.file;
 
     const pitchDeckPromise = getPitchDeck(pitchDeckSlug as string);
-
-    const convertPromise = convert(path);
-
+    const filePathsPromise = convert(path);
     const pitchDeck = await pitchDeckPromise;
     if (pitchDeck === undefined) {
-        res.status(404).json({ error: `Pitch deck with slug '${pitchDeckSlug}' not found`});
+        res.status(404).json({ error: `Pitch deck with slug '${pitchDeckSlug}' not found` });
     } else {
-        const pitchDeckUpload = createUploadRecord(path, pitchDeck);
+        const pitchDeckUpload = await createUploadRecord(path, pitchDeck);
+        const filePaths = await filePathsPromise;
+        console.log('1------------', filePaths);
+        // const pitchDeckImages = await createImageRecords(filePaths, pitchDeck);
 
         res.status(200).json({ data: 'success' });
     }
@@ -60,7 +74,13 @@ apiRoute.post(async (req: { query: { pitchDeckSlug: string }, file: { path: stri
 });
 
 const createUploadRecord = async (filePath: string, pitchDeck: PitchDeck) => {
-    return await PitchDeckUploadFactory.build({ filePath, pitchDeck });
+    return await PitchDeckUploadFactory.create({ filePath, pitchDeck });
+}
+
+const createImageRecords = async (filePaths: string[], pitchDeck: PitchDeck) => {
+    return await filePaths.map(async filePath => {
+        return await PitchDeckImageFactory.create({ filePath, pitchDeck });
+    });
 }
 
 const getPitchDeck = async (slug: string) => {
@@ -71,10 +91,15 @@ const getPitchDeck = async (slug: string) => {
 const convert = async (filePath: string) => {
     const convertApi = new ConvertAPI(process.env.CONVERT_API_SECRET as string, { conversionTimeout: 60 });
     const result = await convertApi.convert('jpg', { File: filePath });
+    const paths = new Array<string>();
 
     await result.files.forEach(file => {
-        file.save(`${CONVERTED_FILES_DESTINATION}/${file.fileName}`);
+        const path = `${CONVERTED_FILES_DESTINATION}/${file.fileName}`;
+        paths.push(path);
+        file.save(path);
     });
+
+    return paths;
 }
 
 export default apiRoute;
