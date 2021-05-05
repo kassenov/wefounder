@@ -1,8 +1,9 @@
-import { Box, Text } from "@chakra-ui/layout";
+import { List, ListItem } from "@chakra-ui/layout";
+import Image from "next/image";
 import { PichDeckImageService } from "services/pitch-deck-image.service";
 import { PitchDeckService } from "services/pitch-deck.service";
 
-const LENGTH_TO_REMOVE = './public/converts'.length;
+const LENGTH_TO_REMOVE = './public'.length;
 
 // This function gets called at build time
 export async function getStaticPaths() {
@@ -18,7 +19,7 @@ export async function getStaticPaths() {
   return { paths, fallback: false }
 }
 
-export async function getStaticProps({ params }: { params: { pitchDeckSlug: string }}) {
+export async function getStaticProps({ params }: { params: { pitchDeckSlug: string } }) {
   const pitchDeckImages = await PichDeckImageService.getAllByPithDeckSlug(params.pitchDeckSlug);
   const imagePaths = pitchDeckImages.map(image => image.filePath.slice(LENGTH_TO_REMOVE));
   return {
@@ -30,12 +31,16 @@ export async function getStaticProps({ params }: { params: { pitchDeckSlug: stri
 
 export default function ViewPage({ imagePaths }: { imagePaths: string[] }) {
   return (
-    <Box>
-     { imagePaths.map((path) => 
-       (
-         <Text>{path}</Text>
-       )
-     )}
-    </Box>
+    <List spacing={3}>
+      { imagePaths.map( path => (
+        <ListItem key={path}>
+          <Image
+            src={path}
+            width={400}
+            height={400}
+          />
+        </ListItem>
+      ))}
+    </List>
   );
 }
