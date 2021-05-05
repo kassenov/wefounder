@@ -25,8 +25,8 @@ export class Company {
 
   @OneToMany((type) => PitchDeck, (pitchDeck) => pitchDeck.company, {
     cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   })
   public pitchDecks!: PitchDeck[];
 }

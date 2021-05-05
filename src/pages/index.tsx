@@ -25,6 +25,12 @@ const IntroText = () => {
             <a>upload page</a>.
           </Link>
         </Box>
+        <Box>
+          The following link{" "}
+          <Link href="/view/pitch_deck_1">
+            <a>view page</a>.
+          </Link>
+        </Box>
       </VStack>
     </>
   );

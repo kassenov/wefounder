@@ -4,11 +4,7 @@ const ViewPage = () => {
   const router = useRouter();
   const { pitchDeckSlug } = router.query;
 
-  return (
-    <>
-      Text
-    </>
-  );
+  return <>Text</>;
 };
 
 export default ViewPage;

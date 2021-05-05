@@ -1,19 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import multer from "multer";
-import { ConvertAPI } from "convertapi";
-
-import { getRepository } from "typeorm";
-import initializeDatabase from "../../../database/initializer/database";
-import { PitchDeck } from "../../../database/entities/PitchDeck";
-import { PitchDeckUploadFactory } from "../../../database/factories/PitchDeckUploadFactory";
-import { PitchDeckImageFactory } from "../../../database/factories/PitchDeckImageFactory";
 import { v4 } from "uuid";
-import { PitchDeckImage } from "database/entities/PitchDeckImage";
+import { PitchDeckService } from "services/pitch-deck.service";
+import { ConversionService } from "services/conversion.service";
+import { PitchDeckUploadService } from "services/pitch-deck-upload.service";
+import { PichDeckImageService } from "services/pitch-deck-image.service";
 
-const FILE_UPLOAD_DESTINATION = "./public/uploads";
-const CONVERTED_FILES_DESTINATION = "./public/converts";
-
+export const FILE_UPLOAD_DESTINATION = "./public/uploads";
 const EXTENSION_REGEX = /(?:\.([^.]+))?$/;
 
 // Returns a Multer instance that provides several methods for generating
@@ -57,81 +51,28 @@ apiRoute.post(
     const { pitchDeckSlug } = req.query;
     const { path } = req.file;
 
-    const pitchDeck = await getPitchDeck(pitchDeckSlug as string);
+    const pitchDeck = await PitchDeckService.getBySlug(pitchDeckSlug as string);
     if (pitchDeck === undefined) {
       res
         .status(404)
         .json({ error: `Pitch deck with slug '${pitchDeckSlug}' not found` });
     } else {
-      const filePathsPromise = convert(path);
-      const pitchDeckUpload = await createUploadRecord(path, pitchDeck);
+      const filePathsPromise = ConversionService.convertByFilePath(path);
+      const pitchDeckUpload = await PitchDeckUploadService.create(
+        path,
+        pitchDeck
+      );
       const filePaths = await filePathsPromise;
-      const pitchDeckImages = await createImageRecords(filePaths, pitchDeck);
+      const pitchDeckImages = await PichDeckImageService.create(
+        filePaths,
+        pitchDeck,
+        pitchDeckUpload
+      );
 
       res.status(200).json({ data: "success" });
     }
   }
 );
-
-const createUploadRecord = async (filePath: string, pitchDeck: PitchDeck) => {
-  // Initialize connection
-  const connection = await initializeDatabase();
-
-  const result = await PitchDeckUploadFactory.create({ filePath, pitchDeck });
-
-  // Close connection
-  await connection.close();
-
-  return result;
-};
-
-const createImageRecords = async (
-  filePaths: string[],
-  pitchDeck: PitchDeck
-) => {
-  // Initialize connection
-  const connection = await initializeDatabase();
-
-  const result: PitchDeckImage[] = [];
-  for (const filePath of filePaths) {
-    const image = await PitchDeckImageFactory.create({ filePath, pitchDeck });
-    result.push(image);
-  }
-
-  // Close connection
-  await connection.close();
-
-  return result;
-};
-
-const getPitchDeck = async (slug: string) => {
-  // Initialize connection
-  const connection = await initializeDatabase();
-
-  const pitchDeckRepo = await getRepository(PitchDeck);
-  const result = await pitchDeckRepo.findOne({ where: { slug } });
-
-  // Close connection
-  await connection.close();
-
-  return result;
-};
-
-const convert = async (filePath: string) => {
-  const convertApi = new ConvertAPI(process.env.CONVERT_API_SECRET as string, {
-    conversionTimeout: 60,
-  });
-  const result = await convertApi.convert("jpg", { File: filePath });
-  const paths = new Array<string>();
-
-  await result.files.forEach((file) => {
-    const path = `${CONVERTED_FILES_DESTINATION}/${file.fileName}`;
-    paths.push(path);
-    file.save(path);
-  });
-
-  return paths;
-};
 
 export default apiRoute;
 

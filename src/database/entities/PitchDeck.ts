@@ -31,8 +31,8 @@ export class PitchDeck {
 
   @OneToMany((type) => PitchDeckUpload, (upload) => upload.pitchDeck, {
     cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   })
   public uploads!: PitchDeckUpload[];
 }
