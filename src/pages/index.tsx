@@ -21,7 +21,7 @@ const IntroText = () => {
         </Box>
         <Box>
           The following link will direct you to{" "}
-          <Link href="/pitch-deck-upload/pitch_deck_1">
+          <Link href="/upload/pitch_deck_1">
             <a>upload page</a>.
           </Link>
         </Box>
