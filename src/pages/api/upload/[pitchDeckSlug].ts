@@ -63,6 +63,9 @@ apiRoute.post(
     const filePathsPromise = convert(path);
     const pitchDeck = await pitchDeckPromise;
     if (pitchDeck === undefined) {
+      // Close connection
+      await connection.close();
+
       res
         .status(404)
         .json({ error: `Pitch deck with slug '${pitchDeckSlug}' not found` });
@@ -71,11 +74,10 @@ apiRoute.post(
       const filePaths = await filePathsPromise;
       const pitchDeckImages = await createImageRecords(filePaths, pitchDeck);
 
+      // Close connection
+      await connection.close();
       res.status(200).json({ data: "success" });
     }
-
-    // Close connection
-    await connection.close();
   }
 );
 

@@ -5,10 +5,12 @@ import {
   Entity,
   Index,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 } from "uuid";
 import { PitchDeck } from "./PitchDeck";
+import { PitchDeckImage } from "./PitchDeckImage";
 
 @Entity()
 export class PitchDeckUpload {
@@ -29,4 +31,7 @@ export class PitchDeckUpload {
 
   @ManyToOne((type) => PitchDeck, (deck) => deck.uploads)
   public pitchDeck!: PitchDeck;
+
+  @OneToMany((type) => PitchDeckImage, (image) => image.upload)
+  public images!: PitchDeckImage[];
 }

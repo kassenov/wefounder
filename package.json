@@ -9,6 +9,8 @@
     "start": "next start",
     "prettify": "prettier --write src/",
     "g:migration": "yarn typeorm:local migration:generate -n",
+    "db:migrate:local": "yarn typeorm:local migration:run",
+    "db:revert:local": "yarn typeorm:local migration:revert",
     "db:seeds:up": "yarn local src/database/seeds/seedsUp.ts",
     "typeorm:local": "yarn local ./node_modules/typeorm/cli.js",
     "local": "DOTENV_CONFIG_PATH=./.env ts-node -P ./tsconfig.json -r dotenv/config"
