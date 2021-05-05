@@ -5,11 +5,11 @@ import {
   Index,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 } from "uuid";
 import { Company } from "./Company";
+import { PitchDeckImage } from "./PitchDeckImage";
 import { PitchDeckUpload } from "./PitchDeckUpload";
 
 @Entity()
@@ -35,4 +35,11 @@ export class PitchDeck {
     onUpdate: "CASCADE",
   })
   public uploads!: PitchDeckUpload[];
+
+  @OneToMany((type) => PitchDeckImage, (image) => image.pitchDeck, {
+    cascade: true,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  public images!: PitchDeckImage[];
 }

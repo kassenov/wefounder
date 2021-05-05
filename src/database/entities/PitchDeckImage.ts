@@ -28,7 +28,7 @@ export class PitchDeckImage {
   @Column({ type: "text", nullable: false })
   public filePath!: string;
 
-  @ManyToOne((type) => PitchDeck, (deck) => deck.uploads)
+  @ManyToOne((type) => PitchDeck, (deck) => deck.images)
   public pitchDeck!: PitchDeck;
 
   @ManyToOne((type) => PitchDeckUpload, (deck) => deck.images)

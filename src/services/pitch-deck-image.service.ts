@@ -34,15 +34,11 @@ const getAllByPithDeckSlug = async (slug: string) => {
   const connection = await initializeDatabase();
 
   const imageRepo = await getRepository(PitchDeckImage);
-  const result = await imageRepo.find({ 
-    where: { pitchDeck: { slug } },
-    join: {
-      alias: "image",
-      leftJoinAndSelect: {
-          pitchDeck: "image.pitchDeck"
-      }
-    }
-  });
+  const result = await imageRepo
+    .createQueryBuilder("pitch_deck_image")
+    .innerJoin("pitch_deck_image.pitchDeck", "pitchDeck")
+    .where("pitchDeck.slug= :slug", { slug })
+    .getMany();
 
   // Close connection
   await connection.close();
