@@ -29,15 +29,17 @@ const create = async (
   return result;
 };
 
-const getAllByPithDeckSlug = async (slug: string) => {
+const getAllLatestByPithDeckSlug = async (slug: string) => {
   // Initialize connection
   const connection = await initializeDatabase();
 
-  const imageRepo = await getRepository(PitchDeckImage);
-  const result = await imageRepo
-    .createQueryBuilder("pitch_deck_image")
+  const qb = await getRepository(PitchDeckImage).createQueryBuilder("pitch_deck_image");
+
+  const result = await qb
     .innerJoin("pitch_deck_image.pitchDeck", "pitchDeck")
+    .innerJoin("pitch_deck_image.upload", "upload")
     .where("pitchDeck.slug= :slug", { slug })
+    .andWhere("upload.id IN " + qb.subQuery().select("pitchDeckUpload.id").from(PitchDeckUpload, "pitchDeckUpload").orderBy("pitchDeckUpload.created_at", "DESC").limit(1).getQuery())
     .getMany();
 
   // Close connection
@@ -48,5 +50,5 @@ const getAllByPithDeckSlug = async (slug: string) => {
 
 export const PichDeckImageService = {
   create,
-  getAllByPithDeckSlug
+  getAllLatestByPithDeckSlug,
 };

@@ -1,5 +1,5 @@
+import { Image } from "@chakra-ui/image";
 import { List, ListItem } from "@chakra-ui/layout";
-import Image from "next/image";
 import { PichDeckImageService } from "services/pitch-deck-image.service";
 import { PitchDeckService } from "services/pitch-deck.service";
 
@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { pitchDeckSlug: string } }) {
-  const pitchDeckImages = await PichDeckImageService.getAllByPithDeckSlug(params.pitchDeckSlug);
+  const pitchDeckImages = await PichDeckImageService.getAllLatestByPithDeckSlug(params.pitchDeckSlug);
   const imagePaths = pitchDeckImages.map(image => image.filePath.slice(LENGTH_TO_REMOVE));
   return {
     props: {
@@ -36,8 +36,7 @@ export default function ViewPage({ imagePaths }: { imagePaths: string[] }) {
         <ListItem key={path}>
           <Image
             src={path}
-            width={400}
-            height={400}
+            allbackSrc="https://via.placeholder.com/650"
           />
         </ListItem>
       ))}
