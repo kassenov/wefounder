@@ -71,16 +71,16 @@ const UploadPage = () => {
   let message = "";
   switch (state) {
     case State.UPLOADING:
-      color = "red.500";
+      color = "blue.500";
       message = "We are uploading!";
       break;
     case State.CONVERTING:
-      color = "blue.500";
+      color = "green.500";
       message = "Building the pitch deck, might take a while!";
       break;
     case State.FINISHED:
-      color = "green.500";
-      message = "All done!!!";
+      color = "";
+      message = "Congrats! You are set now!";
       break;
     default:
       color = "";
@@ -88,11 +88,18 @@ const UploadPage = () => {
         "Here you can upload your presentation to be added to the pitch deck.";
   }
 
+  const shouldShowSpinner = state !== State.INITIAL && state !== State.FINISHED;
+
   return (
     <VStack spacing={8} my={20}>
       <HStack>
-        {state !== State.INITIAL ? <Spinner color={color} /> : <></>}
+        {shouldShowSpinner ? <Spinner color={color} /> : <></>}
         <Text>{message}</Text>
+        {state === State.FINISHED ? (
+          <Link href="/view/pitch_deck_1">See the page.</Link>
+        ) : (
+          <></>
+        )}
       </HStack>
       <div {...dropzoneState.getRootProps({ className: "dropzone" })}>
         <Box
@@ -101,6 +108,7 @@ const UploadPage = () => {
           borderRadius="md"
           cursor="pointer"
           bgColor={getHighlightColor()}
+          w="500px"
         >
           {" "}
           {state === State.INITIAL ? (

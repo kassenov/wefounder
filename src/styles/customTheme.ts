@@ -23,6 +23,11 @@ const customTheme = extendTheme({
     //     borderRadius: 24,
     //   },
     // },
+    Link: {
+      baseStyle: {
+        textDecoration: "underline",
+      },
+    },
   },
 });
 
