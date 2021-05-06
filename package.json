@@ -34,7 +34,9 @@
     "next-connect": "^0.10.1",
     "reflect-metadata": "^0.1.13",
     "better-sqlite3": "^7.1.5",
-    "convertapi": "^1.11.0"
+    "convertapi": "^1.11.0",
+    "@chakra-ui/icons": "^1.0.13",
+    "react-dropzone": "^11.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
