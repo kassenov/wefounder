@@ -1,9 +1,7 @@
 import { Link, Text, Box, Heading, VStack } from "@chakra-ui/layout";
 import Image from "next/image";
-
 import CTASection from "components/CTASection";
 import { useColorMode } from "@chakra-ui/color-mode";
-
 import MotionBox from "../components/motion/Box";
 
 const IntroText = () => {
@@ -21,15 +19,10 @@ const IntroText = () => {
         </Box>
         <Box>
           The following link will direct you to{" "}
-          <Link href="/upload/pitch_deck_1">
-            upload page.
-          </Link>
+          <Link href="/upload/pitch_deck_1">upload page.</Link>
         </Box>
         <Box>
-          The following link{" "}
-          <Link href="/view/pitch_deck_1">
-            view page.
-          </Link>
+          The following link <Link href="/view/pitch_deck_1">view page.</Link>
         </Box>
       </VStack>
     </>

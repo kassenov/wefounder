@@ -57,17 +57,17 @@ apiRoute.post(
         .status(404)
         .json({ error: `Pitch deck with slug '${pitchDeckSlug}' not found` });
     } else {
-      const filePathsPromise = ConversionService.convertByFilePath(path);
+      // const filePathsPromise = ConversionService.convertByFilePath(path);
       const pitchDeckUpload = await PitchDeckUploadService.create(
         path,
         pitchDeck
       );
-      const filePaths = await filePathsPromise;
-      const pitchDeckImages = await PichDeckImageService.create(
-        filePaths,
-        pitchDeck,
-        pitchDeckUpload
-      );
+      // const filePaths = await filePathsPromise;
+      // const pitchDeckImages = await PichDeckImageService.create(
+      //   filePaths,
+      //   pitchDeck,
+      //   pitchDeckUpload
+      // );
 
       res.status(200).json({ data: "success" });
     }
