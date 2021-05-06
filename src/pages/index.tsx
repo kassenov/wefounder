@@ -22,13 +22,13 @@ const IntroText = () => {
         <Box>
           The following link will direct you to{" "}
           <Link href="/upload/pitch_deck_1">
-            <a>upload page</a>.
+            upload page.
           </Link>
         </Box>
         <Box>
           The following link{" "}
           <Link href="/view/pitch_deck_1">
-            <a>view page</a>.
+            view page.
           </Link>
         </Box>
       </VStack>
