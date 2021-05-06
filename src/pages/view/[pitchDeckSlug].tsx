@@ -1,5 +1,5 @@
 import { Image } from "@chakra-ui/image";
-import { List, ListItem } from "@chakra-ui/layout";
+import { Heading, List, ListItem, Text, VStack } from "@chakra-ui/layout";
 import { PichDeckImageService } from "services/pitch-deck-image.service";
 import { PitchDeckService } from "services/pitch-deck.service";
 
@@ -39,12 +39,23 @@ export async function getStaticProps({
 
 export default function ViewPage({ imagePaths }: { imagePaths: string[] }) {
   return (
-    <List spacing={3}>
-      {imagePaths.map((path) => (
-        <ListItem key={path}>
-          <Image src={path} allbackSrc="https://via.placeholder.com/650" />
-        </ListItem>
-      ))}
-    </List>
+    <VStack alignItems="left">
+      <Heading as="h2">Name</Heading>
+      <Text>Here should be a description.</Text>
+      <Text align="justify">
+        Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
+        laying out print, graphic or web designs. The passage is attributed to
+        an unknown typesetter in the 15th century who is thought to have
+        scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a
+        type specimen book.
+      </Text>
+      <List spacing={3}>
+        {imagePaths.map((path) => (
+          <ListItem key={path}>
+            <Image src={path} allbackSrc="https://via.placeholder.com/650" />
+          </ListItem>
+        ))}
+      </List>
+    </VStack>
   );
 }
