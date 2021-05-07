@@ -14,17 +14,12 @@ export default {
           </Box>
         </Box>
       );
-    }
+    },
   ],
 };
 
 const Template: Story<ComponentProps<typeof ProgressBar>> = (args) => (
-  <Box
-    bg="gray.100"
-    p={4}
-    borderRadius="md"
-    w="500px"
-  >
+  <Box bg="gray.100" p={4} borderRadius="md" w="500px">
     <ProgressBar {...args} />
   </Box>
 );
@@ -32,5 +27,5 @@ const Template: Story<ComponentProps<typeof ProgressBar>> = (args) => (
 export const Demo = Template.bind({});
 
 Demo.args = {
-  progress: 10
+  progress: 10,
 };

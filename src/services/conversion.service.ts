@@ -2,6 +2,11 @@ import { ConvertAPI } from "convertapi";
 
 export const CONVERTED_FILES_DESTINATION = "./public/converts";
 
+/**
+ * Converts a file from given file path into images and returns paths to converted images.
+ * @param filePath
+ * @returns
+ */
 const convertByFilePath = async (filePath: string) => {
   const convertApi = new ConvertAPI(process.env.CONVERT_API_SECRET as string, {
     conversionTimeout: 60,

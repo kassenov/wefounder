@@ -1,6 +1,9 @@
 import { Image } from "@chakra-ui/image";
 import { Heading, List, ListItem, Text, VStack } from "@chakra-ui/layout";
-import { getImagePathsByPitchDeckSlug, getPitchDeckStaticPaths } from "../../utils/pre-render.util";
+import {
+  getImagePathsByPitchDeckSlug,
+  getPitchDeckStaticPaths,
+} from "../../utils/pre-render.util";
 import { withConnection } from "../../database/initializer/database";
 
 // This function gets called at build time
@@ -13,7 +16,9 @@ export async function getStaticProps({
 }: {
   params: { pitchDeckSlug: string };
 }) {
-  const imagePaths = await withConnection(getImagePathsByPitchDeckSlug)(params.pitchDeckSlug);
+  const imagePaths = await withConnection(getImagePathsByPitchDeckSlug)(
+    params.pitchDeckSlug
+  );
   return {
     props: {
       imagePaths,

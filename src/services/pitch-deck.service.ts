@@ -1,6 +1,11 @@
 import { getRepository } from "typeorm";
 import { PitchDeck } from "../database/entities/PitchDeck";
 
+/**
+ * Returns pitch deck by slug.
+ * @param slug
+ * @returns
+ */
 const getBySlug = async (slug: string) => {
   const pitchDeckRepo = await getRepository(PitchDeck);
   const result = await pitchDeckRepo.findOne({ where: { slug } });
@@ -8,7 +13,10 @@ const getBySlug = async (slug: string) => {
   return result;
 };
 
-// TODO This should be refactored
+/**
+ * Returns all pitch decks
+ * @returns
+ */
 const getAll = async () => {
   const pitchDeckRepo = await getRepository(PitchDeck);
   const result = await pitchDeckRepo.find();

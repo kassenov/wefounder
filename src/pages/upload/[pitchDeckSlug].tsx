@@ -9,6 +9,7 @@ import { Spinner } from "@chakra-ui/spinner";
 import { getPitchDeckStaticPaths } from "../../utils/pre-render.util";
 import { withConnection } from "../../database/initializer/database";
 import { PichDeckImageService } from "../../services/pitch-deck-image.service";
+import { UPLOAD_FILENAME } from "pages/api/upload/[pitchDeckSlug]";
 
 // This function gets called at build time
 export async function getStaticPaths() {
@@ -20,7 +21,9 @@ export async function getStaticProps({
 }: {
   params: { pitchDeckSlug: string };
 }) {
-  const conversionExists = await withConnection(PichDeckImageService.anyByPithDeckSlug)(params.pitchDeckSlug);
+  const conversionExists = await withConnection(
+    PichDeckImageService.anyByPithDeckSlug
+  )(params.pitchDeckSlug);
   return {
     props: {
       conversionExists,
@@ -61,18 +64,18 @@ const UploadPage = ({ conversionExists }: { conversionExists: boolean }) => {
     if (state === State.UPLOADING) {
       window.onbeforeunload = function () {
         return "Please wait until the upload and preparation is done.";
-      }
+      };
     } else {
       window.onbeforeunload = null;
     }
-  }, [state])
+  }, [state]);
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
       const file = acceptedFiles[0];
 
       const formData = new FormData();
-      formData.append("theFile", file);
+      formData.append(UPLOAD_FILENAME, file);
 
       await axios.post(`/api/upload/${pitchDeckSlug}`, formData, config);
 
@@ -123,9 +126,14 @@ const UploadPage = ({ conversionExists }: { conversionExists: boolean }) => {
 
   return (
     <VStack spacing={8} my={20}>
-      {conversionExists ? <Box bg="tomato" w="100%" p={4} color="white" borderRadius="md">
-        It seems that you already have uploaded your pitch deck. Visit <Link href="/view/pitch_deck_1">this page</Link> to see it.
-        </Box> : ''}
+      {conversionExists ? (
+        <Box bg="tomato" w="100%" p={4} color="white" borderRadius="md">
+          It seems that you already have uploaded your pitch deck. Visit{" "}
+          <Link href="/view/pitch_deck_1">this page</Link> to see it.
+        </Box>
+      ) : (
+        ""
+      )}
       <HStack>
         {shouldShowSpinner ? <Spinner color={color} /> : <></>}
         <Text>{message}</Text>

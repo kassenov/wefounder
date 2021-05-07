@@ -8,6 +8,8 @@ import { PitchDeckUploadService } from "services/pitch-deck-upload.service";
 import { PichDeckImageService } from "services/pitch-deck-image.service";
 import initializeDatabase from "../../../database/initializer/database";
 
+export const UPLOAD_FILENAME = "theFile";
+
 export const FILE_UPLOAD_DESTINATION = "./public/uploads";
 const EXTENSION_REGEX = /(?:\.([^.]+))?$/;
 
@@ -38,7 +40,7 @@ const apiRoute = nextConnect({
 });
 
 // Returns middleware that processes multiple files sharing the same field name.
-const uploadMiddleware = upload.single("theFile");
+const uploadMiddleware = upload.single(UPLOAD_FILENAME);
 
 // Adds the middleware to Next-Connect
 apiRoute.use(uploadMiddleware);

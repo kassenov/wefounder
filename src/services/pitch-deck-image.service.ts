@@ -4,12 +4,19 @@ import { PitchDeckImage } from "../database/entities/PitchDeckImage";
 import { PitchDeckUpload } from "../database/entities/PitchDeckUpload";
 import { getRepository } from "typeorm";
 
+/**
+ * Creates a record in datase.
+ *
+ * @param filePaths
+ * @param pitchDeck
+ * @param upload
+ * @returns
+ */
 const create = async (
   filePaths: string[],
   pitchDeck: PitchDeck,
   upload: PitchDeckUpload
 ) => {
-
   const result: PitchDeckImage[] = [];
   for (const filePath of filePaths) {
     const image = await PitchDeckImageFactory.create({
@@ -23,6 +30,11 @@ const create = async (
   return result;
 };
 
+/**
+ * Returns all latest images given pitch deck slug.
+ * @param slug
+ * @returns
+ */
 const getAllLatestByPithDeckSlug = async (slug: string) => {
   const qb = await getRepository(PitchDeckImage).createQueryBuilder(
     "pitch_deck_image"
@@ -47,6 +59,11 @@ const getAllLatestByPithDeckSlug = async (slug: string) => {
   return result;
 };
 
+/**
+ * Returns true if a pitch deck has images
+ * @param slug
+ * @returns
+ */
 const anyByPithDeckSlug = async (slug: string) => {
   const qb = await getRepository(PitchDeckImage).createQueryBuilder(
     "pitch_deck_image"
