@@ -1,5 +1,6 @@
 import { Image } from "@chakra-ui/image";
 import { Heading, List, ListItem, Text, VStack } from "@chakra-ui/layout";
+import initializeDatabase from "../../database/initializer/database";
 import { PichDeckImageService } from "../../services/pitch-deck-image.service";
 import { PitchDeckService } from "../../services/pitch-deck.service";
 
@@ -7,15 +8,16 @@ const LENGTH_TO_REMOVE = "./public".length;
 
 // This function gets called at build time
 export async function getStaticPaths() {
+  const connection = await initializeDatabase();
+
   const pitchDecks = await PitchDeckService.getAll();
 
-  // Get the paths we want to pre-render based on posts
+  await connection.close();
+
   const paths = pitchDecks.map((pitchDeck) => ({
     params: { pitchDeckSlug: pitchDeck.slug },
   }));
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
   return { paths, fallback: false };
 }
 
@@ -24,9 +26,14 @@ export async function getStaticProps({
 }: {
   params: { pitchDeckSlug: string };
 }) {
+  const connection = await initializeDatabase();
+
   const pitchDeckImages = await PichDeckImageService.getAllLatestByPithDeckSlug(
     params.pitchDeckSlug
   );
+
+  await connection.close();
+
   const imagePaths = pitchDeckImages.map((image) =>
     image.filePath.slice(LENGTH_TO_REMOVE)
   );

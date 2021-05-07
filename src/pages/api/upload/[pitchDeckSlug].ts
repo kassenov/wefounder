@@ -6,6 +6,7 @@ import { PitchDeckService } from "services/pitch-deck.service";
 import { ConversionService } from "services/conversion.service";
 import { PitchDeckUploadService } from "services/pitch-deck-upload.service";
 import { PichDeckImageService } from "services/pitch-deck-image.service";
+import initializeDatabase from "../../../database/initializer/database";
 
 export const FILE_UPLOAD_DESTINATION = "./public/uploads";
 const EXTENSION_REGEX = /(?:\.([^.]+))?$/;
@@ -51,6 +52,8 @@ apiRoute.post(
     const { pitchDeckSlug } = req.query;
     const { path } = req.file;
 
+    const connection = await initializeDatabase();
+
     const pitchDeck = await PitchDeckService.getBySlug(pitchDeckSlug as string);
     if (pitchDeck === undefined) {
       res
@@ -71,6 +74,8 @@ apiRoute.post(
 
       res.status(200).json({ data: "success" });
     }
+
+    await connection.close();
   }
 );
 

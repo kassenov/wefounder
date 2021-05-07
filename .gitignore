@@ -28,7 +28,8 @@ yarn-error.log*
 .env
 
 # db
-mydb.*
+mydb.sql
+mydb-test.sql
 
 # vercel
 .vercel

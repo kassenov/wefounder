@@ -1,4 +1,3 @@
-import initializeDatabase from "../database/initializer/database";
 import { PitchDeck } from "../database/entities/PitchDeck";
 import { PitchDeckImageFactory } from "../database/factories/PitchDeckImageFactory";
 import { PitchDeckImage } from "../database/entities/PitchDeckImage";
@@ -10,8 +9,6 @@ const create = async (
   pitchDeck: PitchDeck,
   upload: PitchDeckUpload
 ) => {
-  // Initialize connection
-  const connection = await initializeDatabase();
 
   const result: PitchDeckImage[] = [];
   for (const filePath of filePaths) {
@@ -23,16 +20,10 @@ const create = async (
     result.push(image);
   }
 
-  // Close connection
-  await connection.close();
-
   return result;
 };
 
 const getAllLatestByPithDeckSlug = async (slug: string) => {
-  // Initialize connection
-  const connection = await initializeDatabase();
-
   const qb = await getRepository(PitchDeckImage).createQueryBuilder(
     "pitch_deck_image"
   );
@@ -52,9 +43,6 @@ const getAllLatestByPithDeckSlug = async (slug: string) => {
           .getQuery()
     )
     .getMany();
-
-  // Close connection
-  await connection.close();
 
   return result;
 };
