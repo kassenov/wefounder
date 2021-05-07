@@ -9,7 +9,7 @@ const toPath = _path => path.join(process.cwd(), '', _path);
 
 module.exports = {
   stories: ['../src/**/*.stories.@(tsx)'],
-  addons: [],
+  addons: ['@storybook/addon-essentials', '@storybook/addon-knobs'],
   webpackFinal: async config => {
     config.plugins.push(
       new MiniCssExtractPlugin(),
