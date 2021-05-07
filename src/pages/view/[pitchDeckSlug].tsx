@@ -1,7 +1,7 @@
 import { Image } from "@chakra-ui/image";
 import { Heading, List, ListItem, Text, VStack } from "@chakra-ui/layout";
-import { PichDeckImageService } from "services/pitch-deck-image.service";
-import { PitchDeckService } from "services/pitch-deck.service";
+import { PichDeckImageService } from "../../services/pitch-deck-image.service";
+import { PitchDeckService } from "../../services/pitch-deck.service";
 
 const LENGTH_TO_REMOVE = "./public".length;
 
@@ -52,7 +52,11 @@ export default function ViewPage({ imagePaths }: { imagePaths: string[] }) {
       <List spacing={3}>
         {imagePaths.map((path) => (
           <ListItem key={path}>
-            <Image src={path} allbackSrc="https://via.placeholder.com/650" />
+            <Image
+              src={path}
+              allbackSrc="https://via.placeholder.com/650"
+              alt={`Pitch Deck Image`}
+            />
           </ListItem>
         ))}
       </List>

@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { PitchDeckUpload } from "database/entities/PitchDeckUpload";
+import { PitchDeckUpload } from "../entities/PitchDeckUpload";
 
 export const PitchDeckUploadFactory = {
   build: (attrs: Partial<PitchDeckUpload> = {}) => {

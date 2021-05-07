@@ -1,8 +1,8 @@
 import initializeDatabase from "../database/initializer/database";
 import { PitchDeck } from "../database/entities/PitchDeck";
 import { PitchDeckImageFactory } from "../database/factories/PitchDeckImageFactory";
-import { PitchDeckImage } from "database/entities/PitchDeckImage";
-import { PitchDeckUpload } from "database/entities/PitchDeckUpload";
+import { PitchDeckImage } from "../database/entities/PitchDeckImage";
+import { PitchDeckUpload } from "../database/entities/PitchDeckUpload";
 import { getRepository } from "typeorm";
 
 const create = async (

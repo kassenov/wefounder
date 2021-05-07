@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { PitchDeckImage } from "database/entities/PitchDeckImage";
+import { PitchDeckImage } from "../entities/PitchDeckImage";
 
 export const PitchDeckImageFactory = {
   build: (attrs: Partial<PitchDeckImage> = {}) => {
