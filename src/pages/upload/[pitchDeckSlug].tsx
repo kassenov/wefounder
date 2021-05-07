@@ -6,6 +6,26 @@ import { Box, Center, HStack, Link, Text, VStack } from "@chakra-ui/layout";
 import { DownloadIcon } from "@chakra-ui/icons";
 import ProgressBar from "components/upload-page/ProgressBar";
 import { Spinner } from "@chakra-ui/spinner";
+import { getImagePathsByPitchDeckSlug, getPitchDeckStaticPaths } from "../../utils/pre-render.util";
+import { withConnection } from "../../database/initializer/database";
+
+// This function gets called at build time
+export async function getStaticPaths() {
+  return await withConnection(getPitchDeckStaticPaths)();
+}
+
+export async function getStaticProps({
+  params,
+}: {
+  params: { pitchDeckSlug: string };
+}) {
+  const imagePaths = await withConnection(getImagePathsByPitchDeckSlug)(params.pitchDeckSlug);
+  return {
+    props: {
+      imagePaths,
+    },
+  };
+}
 
 enum State {
   INITIAL,

@@ -21,4 +21,15 @@ export const initializeDatabase = async (
   return connection;
 };
 
+export const withConnection = <T extends Array<any>, U>(fn: (...args: T) => Promise<U>) => {
+
+  return async (...args: T) => {
+    const connection = await initializeDatabase();
+    const result = await fn(...args);
+    await connection.close();
+
+    return result;
+  }
+}
+
 export default initializeDatabase;
