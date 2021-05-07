@@ -9,7 +9,6 @@ import { Spinner } from "@chakra-ui/spinner";
 import { getPitchDeckStaticPaths } from "../../utils/pre-render.util";
 import { withConnection } from "../../database/initializer/database";
 import { PichDeckImageService } from "../../services/pitch-deck-image.service";
-import { UPLOAD_FILENAME } from "pages/api/upload/[pitchDeckSlug]";
 
 // This function gets called at build time
 export async function getStaticPaths() {
@@ -75,7 +74,7 @@ const UploadPage = ({ conversionExists }: { conversionExists: boolean }) => {
       const file = acceptedFiles[0];
 
       const formData = new FormData();
-      formData.append(UPLOAD_FILENAME, file);
+      formData.append("theFile", file);
 
       await axios.post(`/api/upload/${pitchDeckSlug}`, formData, config);
 
