@@ -92,9 +92,6 @@ const UploadPage = ({ conversionExists }: { conversionExists: boolean }) => {
     if (dropzoneState.isDragAccept) {
       return "blue.100";
     }
-    if (dropzoneState.isDragReject) {
-      return "red.200";
-    }
     if (dropzoneState.isDragActive) {
       return "blue.100";
     }
