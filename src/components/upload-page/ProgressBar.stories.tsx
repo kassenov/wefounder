@@ -19,7 +19,14 @@ export default {
 };
 
 const Template: Story<ComponentProps<typeof ProgressBar>> = (args) => (
-  <ProgressBar {...args} progress={10} />
+  <Box
+    bg="gray.100"
+    p={4}
+    borderRadius="md"
+    w="500px"
+  >
+    <ProgressBar {...args} progress={10} />
+  </Box>
 );
 
 export const Demo = Template.bind({});

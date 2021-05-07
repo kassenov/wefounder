@@ -23,6 +23,7 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
     "@fontsource/lexend": "^4.2.1",
+    "mini-css-extract-plugin": "^1.6.0",
     "axios": "^0.21.1",
     "framer-motion": "^4.1.11",
     "next": "^10.2.0",
