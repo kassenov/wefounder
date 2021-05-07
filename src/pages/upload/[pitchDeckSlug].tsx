@@ -86,6 +86,7 @@ const UploadPage = ({ conversionExists }: { conversionExists: boolean }) => {
   const dropzoneState = useDropzone({
     onDrop,
     accept: ".ppt, .pptx, .pdf", // We can accpet other files but limit it for the sake of the exercise
+    maxSize: 104857600, // 100MB
   });
 
   const getHighlightColor = () => {
