@@ -47,7 +47,22 @@ const getAllLatestByPithDeckSlug = async (slug: string) => {
   return result;
 };
 
+const anyByPithDeckSlug = async (slug: string) => {
+  const qb = await getRepository(PitchDeckImage).createQueryBuilder(
+    "pitch_deck_image"
+  );
+
+  const result = await qb
+    .innerJoin("pitch_deck_image.pitchDeck", "pitchDeck")
+    .where("pitchDeck.slug= :slug", { slug })
+    .limit(1)
+    .getCount();
+
+  return result > 0;
+};
+
 export const PichDeckImageService = {
   create,
   getAllLatestByPithDeckSlug,
+  anyByPithDeckSlug,
 };

@@ -1,13 +1,14 @@
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Box, Center, HStack, Link, Text, VStack } from "@chakra-ui/layout";
 import { DownloadIcon } from "@chakra-ui/icons";
 import ProgressBar from "components/upload-page/ProgressBar";
 import { Spinner } from "@chakra-ui/spinner";
-import { getImagePathsByPitchDeckSlug, getPitchDeckStaticPaths } from "../../utils/pre-render.util";
+import { getPitchDeckStaticPaths } from "../../utils/pre-render.util";
 import { withConnection } from "../../database/initializer/database";
+import { PichDeckImageService } from "../../services/pitch-deck-image.service";
 
 // This function gets called at build time
 export async function getStaticPaths() {
@@ -19,10 +20,10 @@ export async function getStaticProps({
 }: {
   params: { pitchDeckSlug: string };
 }) {
-  const imagePaths = await withConnection(getImagePathsByPitchDeckSlug)(params.pitchDeckSlug);
+  const conversionExists = await withConnection(PichDeckImageService.anyByPithDeckSlug)(params.pitchDeckSlug);
   return {
     props: {
-      imagePaths,
+      conversionExists,
     },
   };
 }
@@ -34,7 +35,7 @@ enum State {
   FINISHED,
 }
 
-const UploadPage = () => {
+const UploadPage = ({ conversionExists }: { conversionExists: boolean }) => {
   const router = useRouter();
   const { pitchDeckSlug } = router.query;
 
@@ -55,6 +56,16 @@ const UploadPage = () => {
       }
     },
   };
+
+  useEffect(() => {
+    if (state === State.UPLOADING) {
+      window.onbeforeunload = function () {
+        return "Please wait until the upload and preparation is done.";
+      }
+    } else {
+      window.onbeforeunload = null;
+    }
+  }, [state])
 
   const onDrop = useCallback(
     async (acceptedFiles) => {
@@ -112,6 +123,9 @@ const UploadPage = () => {
 
   return (
     <VStack spacing={8} my={20}>
+      {conversionExists ? <Box bg="tomato" w="100%" p={4} color="white" borderRadius="md">
+        It seems that you already have uploaded your pitch deck. Visit <Link href="/view/pitch_deck_1">this page</Link> to see it.
+        </Box> : ''}
       <HStack>
         {shouldShowSpinner ? <Spinner color={color} /> : <></>}
         <Text>{message}</Text>
