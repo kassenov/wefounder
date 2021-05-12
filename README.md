@@ -52,6 +52,7 @@ There is still quite a bit of room for improvements on many sides:
 - Handling errors weren't properly implemented.
 - Upload page is too big and needs to be refactored, but I don't think I have spare time to do that.
 - I would also add feature flagging.
+- Look into using API versioning.
 
 # Setup
 
